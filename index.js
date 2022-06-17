@@ -28,12 +28,6 @@ var DelayedResponse = function (req, res, next) {
     this.next = next;
     this.timers = {};
 
-    /*
-    // if request is aborted, end the response immediately
-    req.on('close', function () {
-        abort.call(delayed);
-    });
-    */
     // make sure timers stop if response is ended or closed
     res.on('close', function () {
         delayed.stop();
@@ -125,15 +119,6 @@ function heartbeat() {
     }
     // default behavior: write the heartbeat character (a space)
     this.res.write(' ');
-}
-
-function abort() {
-    this.stop();
-    if (this.listeners('abort').length) {
-        return this.emit('abort');
-    }
-    // default behavior: end the response with no fanfare
-    this.res.end();
 }
 
 /**
